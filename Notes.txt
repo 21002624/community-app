@@ -1,0 +1,33 @@
+For UI
+    twain CSS
+data validation
+    tanstack
+
+1.backend
+    project setup
+    authentication
+    user controlls
+    pass controlls
+    notification controlls
+
+2.ui design
+    hard coded data
+    react router dom
+
+3.connect
+    quesries
+    mutations
+    hooks
+
+4.deploy
+    setup the server
+    render.com
+
+30.9.2024 - monday (16:36) 
+    setup backend and frontend
+    created auth.js
+        server.js
+        and some basic 
+        app.listen(8000,()=>{
+            console.log("server is listining on port 8000");
+        })
