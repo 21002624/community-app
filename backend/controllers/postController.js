@@ -206,7 +206,7 @@ export const getFollowingPosts = async (req,res)=>{
     }
 }
 
-export const getUserPosts = async (req, res)=>{
+export const getUserPosts = async (req, res)=>{s
     try{
         const {username} = req.params;
 
