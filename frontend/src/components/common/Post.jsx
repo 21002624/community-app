@@ -5,13 +5,45 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
+
+	const {data : authUser} = useQuery ({
+		queryKey : ["authUser"]
+	});
+
+	const {mutate : deletePost , isPending} = useMutation({
+		mutationFn : async () =>{
+			try{
+				const res = await fetch(`/api/posts/${post._id}` ,
+					{method : "DELETE",}
+				)
+
+				const data = await res.json();
+
+				if(!res.ok){
+					throw new Error(data.error || "something" )
+				}
+
+				return data;
+			}
+			catch(error){
+				throw new Error(error);
+			}
+		},
+		onSuccess : () =>{
+			toast.success("post deleted successfully");
+		}
+	})
+
+
 	const postOwner = post.user;
 	const isLiked = false;
-	const isMyPost = true;
-
+	const isMyPost = authUser._id === post.user._id;
+ 
 	const formattedDate = "1h";
 
 	const isCommenting = false;
@@ -49,7 +81,7 @@ const Post = ({ post }) => {
 						)}
 					</div>
 					<div className='flex flex-col gap-3 overflow-hidden'>
-						<span>{post.text}</span>
+						<span>{post.text}</span> 
 						{post.img && (
 							<img
 								src={post.img}
