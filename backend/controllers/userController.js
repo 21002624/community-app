@@ -109,7 +109,7 @@ export const updateUser= async (req,res)=>{
             const isMatch = await bcrypt.compare(currentPassword,user.password);
             if(! isMatch) return res.status(400).json({error : "password must be 6 char"});
             if(newPassword.length < 6){
-                return res.status(400).jsoc({error : "password must be 6 char"});
+                return res.status(400).json({error : "password must be 6 char"});
             }
             
 
@@ -125,13 +125,14 @@ export const updateUser= async (req,res)=>{
             const uploadedResponse = await cloudinary.uploader.upload(profileImg)
             profileImg = uploadedResponse.secure_url;
         }
-        if(coverImg){
-            if(user.coverImg){
+        if (coverImg) {
+            if (user.coverImg) {
                 await cloudinary.uploader.destroy(user.coverImg.split("/").pop().split(".")[0]);
             }
-            const uploadedResponse = await cloudinary.uploader.upload(profileImg)
-            profileImg = uploadedResponse.secure_url;
+            const uploadedResponse = await cloudinary.uploader.upload(coverImg); // Changed profileImg to coverImg
+            coverImg = uploadedResponse.secure_url;
         }
+        
 
         user.fullName= fullName || user.fullName;
         user.email= email || user.email;
@@ -147,9 +148,9 @@ export const updateUser= async (req,res)=>{
 
         return res.status(200).json(user);
 
-    } catch(error){
-        console.log("error in getsuggested : ", error.message);
-        response.status(500).json({error: error.message});
-
+    } catch (error) {
+        console.log("error in getsuggested:", error.message);
+        res.status(500).json({ error: error.message }); // Fixed from response to res
     }
+    
 } 
