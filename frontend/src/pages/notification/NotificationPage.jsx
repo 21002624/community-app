@@ -4,10 +4,11 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryCache, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const NotificationPage = () => {
+	const queryClient = useQueryClient();
 	
 	const {data  : notifications ,  isLoading, } = useQuery ({
 		queryKey : ["notifications"],
@@ -47,6 +48,7 @@ const NotificationPage = () => {
 		onSuccess : () =>
 		{
 			toast.success("notification deleted successfully");
+			queryClient.invalidateQueries({queryKey : ["notifications"]})
 		}
 	});
 
